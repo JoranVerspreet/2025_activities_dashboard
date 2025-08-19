@@ -1,1 +1,1 @@
-
+Folder with all Parquet files of the project

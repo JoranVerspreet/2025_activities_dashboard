@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-def split_time_series(df, date_col="date", test_days=60):
+def split_time_series(df, date_col="date", test_days=90):
     """
     Splits a time series DataFrame into train/validation and final test sets.
 
@@ -12,7 +12,7 @@ def split_time_series(df, date_col="date", test_days=60):
         Input DataFrame containing a datetime column.
     date_col : str, default="date"
         The name of the datetime column to use as index.
-    test_days : int, default=60
+    test_days : int, default=90
         Number of days to hold out for the final test set.
 
     Returns

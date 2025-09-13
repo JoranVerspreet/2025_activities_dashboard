@@ -36,8 +36,5 @@ def f_split_time_series(df, date_col="date", test_days=90):
     df_trainval = df[df.index <= cutoff_date]
     df_test_final = df[df.index > cutoff_date]
 
-    print(f"Train/Val data: {df_trainval.index.min().date()} to {df_trainval.index.max().date()}")
-    print(f"Final Test data: {df_test_final.index.min().date()} to {df_test_final.index.max().date()}")
-
     return df_trainval, df_test_final, cutoff_date
 

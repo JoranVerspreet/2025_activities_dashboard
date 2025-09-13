@@ -61,8 +61,8 @@ def f_baseline_model(test_df: pd.DataFrame) -> pd.DataFrame:
 
     # Merge actuals with predictions
     merged_all = pd.merge(
-        test_df,
         baseline_df,
+        test_df,
         on=['date', 'store_nbr', 'item_nbr'],
         how='left'
     )

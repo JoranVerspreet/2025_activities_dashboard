@@ -11,7 +11,16 @@ def f_asym_wmae(y_true, y_pred, alpha=0.333, wi=1.25):
     errors = y_true - y_pred
     weights = np.where(errors > 0, alpha, 1 - alpha)
     wmae = np.sum(wi * weights * np.abs(errors)) / np.sum(wi * weights)
-    return wmae
+    
+    # Over- en onderlevering
+    over_delivery = np.sum(np.where(errors < 0, -errors, 0))   # maak positief
+    under_delivery = np.sum(np.where(errors > 0, errors, 0))
+
+    # Totaal verkochte eenheden
+    total_sales = np.sum(y_true)
+ 
+    return wmae, total_sales, over_delivery, under_delivery
+
 
 def f_compute_metrics(y_true, y_pred, alpha=0.333, wi=1.25):
     rmse = np.sqrt(mean_squared_error(y_true, y_pred))

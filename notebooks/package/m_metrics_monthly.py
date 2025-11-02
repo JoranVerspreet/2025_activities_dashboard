@@ -8,6 +8,7 @@ def f_metrics_monthly(df_test_final, y_true_col='unit_sales', y_pred_cols=['pred
     for multiple prediction columns during each full month in the test set.
     Aggregates to month-item level before computing metrics.
     Returns per-month metrics and overall averages.
+    Excludes the first 4 months and last 3 months of the test set from evaluation.
     """
 
     # --- 1. Input validation ---
@@ -25,8 +26,14 @@ def f_metrics_monthly(df_test_final, y_true_col='unit_sales', y_pred_cols=['pred
     df['year'] = df['date'].dt.year
     df['month'] = df['date'].dt.month
 
-    # --- 3. Get all unique (year, month) pairs ---
-    df_months = df[['year', 'month']].drop_duplicates().sort_values(['year', 'month'])
+    # --- 3. Determine valid months (exclude first 4 and last 3 months) ---
+    df_months = df[['year', 'month']].drop_duplicates().sort_values(['year', 'month']).reset_index(drop=True)
+    if len(df_months) <= 7:
+        raise ValueError("Test set is too short to exclude first 4 and last 3 months")
+    valid_months = df_months.iloc[4:-3]
+
+    # --- 4. Filter df to only valid months ---
+    df = df.merge(valid_months, on=['year', 'month'], how='inner')
 
     # --- 4. Loop through each month and calculate metrics ---
     monthly_metrics = []

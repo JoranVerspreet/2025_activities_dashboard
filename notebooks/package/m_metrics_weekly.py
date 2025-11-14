@@ -44,6 +44,11 @@ def f_metrics_weekly(df_test_final, y_true_col='unit_sales', y_pred_cols=['pred_
         ((df_weeks['iso_year'] == start_year) & (df_weeks['iso_week'] >= start_week))
     ].sort_values(['iso_year', 'iso_week']).reset_index(drop=True)
 
+    # --- Exclude the last 2 weeks of the test period ---
+    max_year, max_week, _ = df['date'].max().isocalendar()
+    df_weeks = df_weeks[~((df_weeks['iso_year'] == max_year) & (df_weeks['iso_week'] >= max_week-2))]
+
+
     # --- 5. Rolling 2-week windows evaluation ---
     all_metrics = []
 
@@ -69,6 +74,9 @@ def f_metrics_weekly(df_test_final, y_true_col='unit_sales', y_pred_cols=['pred_
         for y_pred_col in y_pred_cols:
             y_pred = weekly_df[y_pred_col].values
             errors = y_true - y_pred
+            if np.sum(y_true) == 0:
+                continue  # skip this window
+
 
             metrics = {
                 'weeks': ', '.join([f"{int(y)}-W{int(w):02d}" for y, w in zip(window['iso_year'], window['iso_week'])]),

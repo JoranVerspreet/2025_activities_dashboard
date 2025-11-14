@@ -1,6 +1,6 @@
 import pandas as pd
 
-def f_split_time_series_month(df, date_col="date", test_months=5, buffer_months=4):
+def f_split_time_series_month(df, date_col="date", test_months=7, buffer_months=4):
     """
     Splits time series into training/validation and test sets.
 

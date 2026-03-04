@@ -1,1 +1,0 @@
-{"xgb_2_month": {"learning_rate": 0.031938975479410735, "max_depth": 9, "subsample": 0.6837572979557527, "colsample_bytree": 0.8897170959411489, "lambda": 2.529726092208916, "alpha": 0.015768960015755312}, "avg_best_iter_xgb_2_month": 2822}

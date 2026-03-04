@@ -12,7 +12,7 @@ st.title("2025 Weekly Activity Dashboard")
 
 
 # Load data
-df = pd.read_csv('../data/activities.csv')
+df = pd.read_csv('data/activities.csv')
 
 # Month translations
 months = {

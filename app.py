@@ -1,13 +1,10 @@
 import streamlit as st
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
 import plotly.express as px
-import streamlit as st
 from pandas.api.types import CategoricalDtype
 
 
-st.title("2025 Weekly Activities")
+st.title("2025 Activities Overview")
 
 
 
@@ -45,7 +42,7 @@ df['Week'] = df['Datum van activiteit'].dt.isocalendar().week
 
 
 # Filter 2025
-df_2025 = df[df['Year'] == 2025]
+df_2025 = df[df['Year'] == 2025].copy()
 df_2025['Month'] = df_2025['Date'].dt.month_name()
 
 month_order = [
@@ -61,9 +58,10 @@ df_monthly = (
     ['Beweegtijd']
     .sum()
 )
+df_monthly['Month'] = df_monthly['Month'].astype(month_cat)
 
 df_monthly['Hours'] = df_monthly['Beweegtijd'] / 3600
-df_monthly['Month_Week'] = df_monthly['Month'].astype(str) + " W" + df_monthly['Week'].astype(str)
+
 from pandas.api.types import CategoricalDtype
 
 # Create the correct order
@@ -72,16 +70,8 @@ month_order = [
     'July','August','September','October','November','December'
 ]
 
-# Ensure weeks within months are ordered
-ordered_weeks = []
-for month in month_order:
-    weeks_in_month = df_monthly[df_monthly['Month'] == month]['Week'].sort_values().unique()
-    for week in weeks_in_month:
-        ordered_weeks.append(f"{month} W{week}")
 
 # Set as categorical
-month_week_cat = CategoricalDtype(categories=ordered_weeks, ordered=True)
-df_monthly['Month_Week'] = df_monthly['Month_Week'].astype(month_week_cat)
 df_monthly['Activity'] = df_monthly['Activiteitstype'].astype(str)
 df_monthly['Activity']= df_monthly['Activity'].replace({
     'Fietsen': 'Cycling',
@@ -105,5 +95,5 @@ fig.update_layout(
     )
 )
 
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 

@@ -73,6 +73,11 @@ month_order = [
 
 # Set as categorical
 df_monthly['Activity'] = df_monthly['Activiteitstype'].astype(str)
+df_monthly["Activity"] = (
+    df_monthly["Activiteitstype"]
+    .astype(str)
+    .str.strip()
+)
 df_monthly['Activity']= df_monthly['Activity'].replace({
     'Fietsen': 'Cycling',
     'Hardlopen': 'Running',

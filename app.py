@@ -79,8 +79,8 @@ df_monthly["Activity"] = (
     .str.strip()
 )
 df_monthly['Activity']= df_monthly['Activity'].replace({
-    'Fietsen': 'Cycling',
-    'Hardlopen': 'Running',
+    'Fietsrit': 'Cycling',
+    'Hardloopsessie': 'Running',
     'Wandelen': 'Walking',
     'Zwemmen': 'Swimming'
 })

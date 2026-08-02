@@ -2,6 +2,11 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from pandas.api.types import CategoricalDtype
+import math
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
 
 
 st.title("2025 Activities Overview")
@@ -54,25 +59,15 @@ df_2025['Month'] = df_2025['Month'].astype(month_cat)
 
 df_monthly = (
     df_2025
-    .groupby(['Month', 'Activiteitstype'], observed=True, as_index=False)
-    ['Beweegtijd']
-    .sum()
-)
+    .groupby(['Month', 'Activiteitstype'], observed=True, as_index=False).agg({'Beweegtijd': 'sum',
+                                                                               'Afstand':'sum'}))
+
 df_monthly['Month'] = df_monthly['Month'].astype(month_cat)
 
 df_monthly['Hours'] = df_monthly['Beweegtijd'] / 3600
 
-from pandas.api.types import CategoricalDtype
-
-# Create the correct order
-month_order = [
-    'January','February','March','April','May','June',
-    'July','August','September','October','November','December'
-]
-
 
 # Set as categorical
-df_monthly['Activity'] = df_monthly['Activiteitstype'].astype(str)
 df_monthly["Activity"] = (
     df_monthly["Activiteitstype"]
     .astype(str)
@@ -102,3 +97,50 @@ fig.update_layout(
 
 st.plotly_chart(fig, width="stretch")
 
+
+
+################################################
+# Running pace calculations
+df_run = df_monthly[df_monthly['Activity'] == 'Running'].copy()
+
+# Average running speed (min/km)
+df_run['Running pace numeric'] = (1000*df_run['Hours'])/ (60*df_run['Afstand']).replace(0, np.nan)
+
+# Convert to min:sec/km safely
+def min_to_mmss(x):
+    if pd.isna(x) or not math.isfinite(x):
+        return np.nan
+
+    minutes = int(x)
+    seconds = int(round((x - minutes) * 60))
+
+    # handle rounding edge case (e.g. 4.999 → 5:00)
+    if seconds == 60:
+        minutes += 1
+        seconds = 0
+
+    return f"{minutes}:{seconds:02d}"
+
+
+df_run['Running pace string'] = (
+    df_run['Running pace numeric']
+    .apply(min_to_mmss)
+)
+
+fig, ax = plt.subplots(figsize=(10, 5))
+
+sns.barplot(
+    data=df_run,
+    x="Month",
+    y="Running pace numeric",
+    ax=ax
+)
+
+ax.set_ylabel("Pace (min/km)")
+ax.set_xlabel("Month")
+
+ax.yaxis.set_major_formatter(
+    FuncFormatter(lambda x, pos: min_to_mmss(x))
+)
+
+st.pyplot(fig)

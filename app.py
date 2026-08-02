@@ -60,7 +60,7 @@ df_2025['Month'] = df_2025['Month'].astype(month_cat)
 df_monthly = (
     df_2025
     .groupby(['Month', 'Activiteitstype'], observed=True, as_index=False).agg({'Beweegtijd': 'sum',
-                                                                               'Afstand':'sum'}))
+                                                                               'Afstand.1':'sum'}))
 
 df_monthly['Month'] = df_monthly['Month'].astype(month_cat)
 
@@ -104,7 +104,7 @@ st.plotly_chart(fig, width="stretch")
 df_run = df_monthly[df_monthly['Activity'] == 'Running'].copy()
 
 # Average running speed (min/km)
-df_run['Running pace numeric'] = (1000*df_run['Hours'])/ (60*df_run['Afstand']).replace(0, np.nan)
+df_run['Running pace numeric'] = (1000*df_run['Hours'])/ (60*df_run['Afstand.1']).replace(0, np.nan)
 
 # Convert to min:sec/km safely
 def min_to_mmss(x):

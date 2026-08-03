@@ -181,3 +181,33 @@ ax.set(xlabel="")
 ax.set_ylabel("Pace (km/h)")
 ax.set_xlabel("Month")
 st.pyplot(fig)
+
+
+
+################################################
+# Swimming pace calculations
+df_swim = df_monthly[df_monthly['Activity'] == 'Swimming'].copy()
+
+# Average swimming speed (min/km)
+df_swim['Swimming pace numeric'] = (100*df_swim['Minutes']) / (df_swim['Afstand.1']).replace(0, np.nan)
+df_swim['Swimming pace string'] = df_swim['Swimming pace numeric'].apply(min_to_mmss)
+
+st.subheader("Average Swimming pace by month")
+
+
+fig, ax = plt.subplots(figsize=(10, 5))
+
+sns.lineplot(
+    data=df_swim,
+    x="Month",
+    y="Swimming pace numeric",
+    ax=ax,
+    marker="o"
+    )
+ax.set_ylim(1, 4)
+plt.setp(ax.get_xticklabels(), rotation=45, ha="right")
+ax.set(xlabel="")
+
+ax.set_ylabel("Pace (min/100 m)")
+ax.set_xlabel("Month")
+st.pyplot(fig)

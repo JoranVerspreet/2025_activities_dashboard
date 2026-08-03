@@ -149,3 +149,35 @@ ax.yaxis.set_major_formatter(
 )
 
 st.pyplot(fig)
+
+
+
+
+
+################################################
+# Cycling pace calculations
+df_cycl = df_monthly[df_monthly['Activity'] == 'Cycling'].copy()
+
+# Average cycling speed (min/km)
+df_cycl['Cycling pace numeric'] = (df_cycl['Afstand.1']/1000) / (df_cycl['Hours']).replace(0, np.nan)
+
+
+st.subheader("Average Cycling pace by month")
+
+
+fig, ax = plt.subplots(figsize=(10, 5))
+
+sns.lineplot(
+    data=df_cycl,
+    x="Month",
+    y="Cycling pace numeric",
+    ax=ax,
+    marker="o"
+    )
+ax.set_ylim(4.5, 5.5)
+plt.setp(ax.get_xticklabels(), rotation=45, ha="right")
+ax.set(xlabel="")
+
+ax.set_ylabel("Pace (min/km)")
+ax.set_xlabel("Month")
+st.pyplot(fig)

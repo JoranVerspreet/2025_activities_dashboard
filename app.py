@@ -174,7 +174,7 @@ sns.lineplot(
     ax=ax,
     marker="o"
     )
-ax.set_ylim(0, 35)
+ax.set_ylim(20, 30)
 plt.setp(ax.get_xticklabels(), rotation=45, ha="right")
 ax.set(xlabel="")
 

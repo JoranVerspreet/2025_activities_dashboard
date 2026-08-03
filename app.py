@@ -125,7 +125,7 @@ def min_to_mmss(x):
 
 df_run['Running pace string'] = (
     df_run['Running pace numeric']
-    .apply(min_to_mmss)
+    
 )
 
 fig, ax = plt.subplots(figsize=(10, 5))

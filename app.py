@@ -105,7 +105,7 @@ st.plotly_chart(fig, width="stretch")
 df_run = df_monthly[df_monthly['Activity'] == 'Running'].copy()
 
 # Average running speed (min/km)
-df_run['Running pace numeric'] = (df_run['Minutes']) / (df_run['Afstand.1']).replace(0, np.nan)
+df_run['Running pace numeric'] = (1000*df_run['Minutes']) / (df_run['Afstand.1']).replace(0, np.nan)
 
 # Convert to min:sec/km safely
 def min_to_mmss(x):

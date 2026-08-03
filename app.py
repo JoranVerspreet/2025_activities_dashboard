@@ -135,6 +135,7 @@ sns.lineplot(
     x="Month",
     y="Running pace numeric",
     ax=ax,
+    marker="o"
     )
 ax.set_ylim(4.5, 5.5)
 

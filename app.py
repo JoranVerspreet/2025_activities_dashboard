@@ -125,20 +125,17 @@ def min_to_mmss(x):
 
 df_run['Running pace string'] = df_run['Running pace numeric'].apply(min_to_mmss)
 
-st.subheader("Running pace by month")
-st.dataframe(
-    df_run[['Month', 'Running pace numeric', 'Running pace string']]
-    .sort_values('Month')
-    .reset_index(drop=True)
-)
+st.subheader("Average Running pace by month")
+
 
 fig, ax = plt.subplots(figsize=(10, 5))
 
-sns.barplot(
+sns.lineplot(
     data=df_run,
     x="Month",
     y="Running pace numeric",
-    ax=ax
+    ax=ax,
+    ylim=(4:30, 5:30)
 )
 
 ax.set_ylabel("Pace (min/km)")

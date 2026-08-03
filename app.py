@@ -135,8 +135,8 @@ sns.lineplot(
     x="Month",
     y="Running pace numeric",
     ax=ax,
-    ylim=("4:30", "5:30")
-)
+    )
+ax.set_ylim(4.5, 5.5)
 
 ax.set_ylabel("Pace (min/km)")
 ax.set_xlabel("Month")

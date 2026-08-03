@@ -138,6 +138,9 @@ sns.lineplot(
     marker="o"
     )
 ax.set_ylim(4.5, 5.5)
+plt.setp(ax.get_xticklabels(), rotation=45, ha="right")
+ax.set(xlabel=None)
+
 
 ax.set_ylabel("Pace (min/km)")
 ax.set_xlabel("Month")

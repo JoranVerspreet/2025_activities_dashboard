@@ -210,4 +210,9 @@ ax.set(xlabel="")
 
 ax.set_ylabel("Pace (min/100 m)")
 ax.set_xlabel("Month")
+
+ax.yaxis.set_major_formatter(
+    FuncFormatter(lambda x, pos: min_to_mmss(x))
+)
+
 st.pyplot(fig)
